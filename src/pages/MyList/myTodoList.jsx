@@ -7,29 +7,21 @@ export class MyTodoList extends Component {
     this.state = {
       items: [],
       isFiltered: false,
-      isSearching: false,
-      filter: "",
       currentItem: {
         value: "",
         id: "",
         isCompleted: false,
         isUpdating: false,
+        time: "",
       },
     };
   }
-  handleSearch = (value) => {
-    this.setState({
-      filter: value,
-      isSearching: !this.state.isSearching,
-    });
-  };
   handleFilter = () => {
     this.setState({
-      isSearching: !this.state.isSearching,
       isFiltered: !this.state.isFiltered,
     });
   };
-  isUpdating = (id) => {
+  handleUpdating = (id) => {
     const items = [...this.state.items]; // MUTABLE
 
     items.map((item) => {
@@ -49,20 +41,19 @@ export class MyTodoList extends Component {
       }
     });
     this.setState({
-      items: items,
+      items,
     });
   };
   handleCreateItem = (e) => {
     e.preventDefault();
     const newItem = this.state.currentItem;
-    if (newItem.text !== "") {
+    if (newItem.value !== "") {
       const newList = [...this.state.items, newItem];
       this.setState({
         items: newList,
         currentItem: {
           value: "",
           id: "",
-          isCompleted: false,
         },
       });
     }
@@ -71,7 +62,10 @@ export class MyTodoList extends Component {
     this.setState({
       currentItem: {
         value: e.target.value,
-        id: new Date().toLocaleTimeString(),
+        id: Date.now(),
+        time: new Date().toLocaleTimeString(),
+        isCompleted: false,
+        isUpdating: false,
       },
     });
   };
@@ -86,8 +80,9 @@ export class MyTodoList extends Component {
     items.map((item) => {
       if (item.id === id) {
         item.value = value;
-        item.id = new Date().toLocaleTimeString();
+        item.id = Date.now();
         item.isUpdating = false;
+        item.time = new Date().toLocaleTimeString();
       }
     });
     this.setState({
@@ -97,23 +92,21 @@ export class MyTodoList extends Component {
   //
 
   render() {
+    const props = {
+      isFiltered: this.state.isFiltered,
+      items: this.state.items,
+      currentItem: this.state.currentItem,
+      onCreateItem: this.handleCreateItem,
+      onChange: this.handleChange,
+      onFilter: this.handleFilter,
+      onDeleteItem: this.handleDeleteItem,
+      onUpdateItem: this.handleUpdateItem,
+      onStatusChange: this.handleStatusChange,
+      onUpdating: this.handleUpdating,
+    };
     return (
       <>
-        <ListItems
-          filterValue={this.state.filter}
-          isFiltered={this.state.isFiltered}
-          items={this.state.items}
-          currentItem={this.state.currentItem}
-          onCreateItem={this.handleCreateItem}
-          onChange={this.handleChange}
-          onDeleteItem={this.handleDeleteItem}
-          onUpdateItem={this.handleUpdateItem}
-          onStatusChange={this.handleStatusChange}
-          onFilter={this.handleFilter}
-          onSearch={this.handleSearch}
-          isUpdating={this.isUpdating}
-          isSearching={this.state.isSearching}
-        />
+        <ListItems {...props} />
       </>
     );
   }

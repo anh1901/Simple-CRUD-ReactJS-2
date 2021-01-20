@@ -1,20 +1,20 @@
 import React from "react";
 import { Input, Button, Popconfirm, Tooltip, Switch, Divider, Tag } from "antd";
 import { CloseOutlined, CheckOutlined, EditOutlined } from "@ant-design/icons";
-const Item = (props) => {
+const Item = (other) => {
   const {
-    items,
-    isUpdating,
+    onUpdating,
     onUpdateItem,
     onStatusChange,
     onDeleteItem,
-  } = props;
+    items,
+  } = other;
   const listItems = items.map((item) => {
     return (
       <>
         <div key={item.id}>
           <Tag color={item.isCompleted ? "cyan" : "red"}>{item.value}</Tag> last
-          updated at {item.id}.
+          updated at {item.time}.
           {item.isUpdating && (
             <Input
               autoFocus
@@ -37,11 +37,12 @@ const Item = (props) => {
               onChange={() => onStatusChange(item.id)}
               defaultChecked={item.isCompleted}
             />
+
             <Divider type="vertical" />
           </Tooltip>
           <Popconfirm
             title="Edit the task?"
-            onConfirm={() => isUpdating(item.id)}
+            onConfirm={() => onUpdating(item.id)}
           >
             <Divider type="vertical" />
             <Button shape="circle" type="primary">

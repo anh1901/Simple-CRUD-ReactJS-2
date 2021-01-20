@@ -72,20 +72,20 @@ export class App extends Component {
                       </Link>
                     </Col>
                   </Menu.Item>
-                  {this.state.isLoggedIn && (
-                    <Menu.Item key="2">
-                      <Col>
-                        <Link
-                          to={"/myTodoList"}
-                          id="myTodoList"
-                          className="nav-link"
-                          style={{ color: "white" }}
-                        >
-                          My Todo List
-                        </Link>
-                      </Col>
-                    </Menu.Item>
-                  )}
+                  {/* {this.state.isLoggedIn && ( */}
+                  <Menu.Item key="2">
+                    <Col>
+                      <Link
+                        to={"/myTodoList"}
+                        id="myTodoList"
+                        className="nav-link"
+                        style={{ color: "white" }}
+                      >
+                        My Todo List
+                      </Link>
+                    </Col>
+                  </Menu.Item>
+                  {/* )} */}
                   <Divider type="vertical" />
                   <Menu.Item key="3">
                     <Col>
@@ -136,7 +136,7 @@ export class App extends Component {
                   )}
                 />
                 <Route path="/about" component={About} />
-                <Route path='/myTodoList' component={MyTodoList}/>
+                <Route path="/myTodoList" component={MyTodoList} />
               </Switch>
             </Content>
             <Footer
